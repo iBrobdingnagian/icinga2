@@ -1,0 +1,40 @@
+version: '3.7'
+services:
+  icinga3:
+    image: jordan/icinga2
+    deploy:
+      resources:
+        reservations:
+          cpus: '2'
+          memory: 1024M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+    hostname: icinga3
+    environment:
+      - ICINGAWEB2_ADMIN_USER=ltnet
+      - ICINGAWEB2_ADMIN_PASS=Nova
+      - ICINGA2_USER_FULLNAME=Icinga2
+      - MYSQL_ROOT_PASSWORD=NovaGlider1979
+      - DEFAULT_MYSQL_PASS=NOvaGlider1979
+    volumes:
+      - ./data/icinga/cache:/var/cache/icinga2
+      - ./data/icinga/certs:/etc/apache2/ssl
+      - ./data/icinga/etc/icinga2:/etc/icinga2
+      - ./data/icinga/etc/icingaweb2:/etc/icingaweb2
+      - ./data/icinga/lib/icinga:/var/lib/icinga2
+      - ./data/icinga/lib/php/sessions:/var/lib/php/sessions
+      - ./data/icinga/log/apache2:/var/log/apache2
+      - ./data/icinga/log/icinga2:/var/log/icinga2
+      - ./data/icinga/log/icingaweb2:/var/log/icingaweb2
+      - ./data/icinga/log/mysql:/var/log/mysql
+      - ./data/icinga/spool:/var/spool/icinga2
+      - ./data/icinga/cron.d/icinga:/etc/cron.d/icinga
+      - ./data/mysql/data:/var/lib/mysql
+    ports:
+      - "8082:80"
+      - "5665:5665"
+
+volumes:
+  data:
+
